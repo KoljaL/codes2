@@ -7,20 +7,28 @@ let content = document.getElementById("content");
 sendButton.addEventListener('click', newEntry);
 
 
-
 function newEntry(el) {
     event.preventDefault;
-    deb(el)
     let formData = new FormData();
     formData.append('content', content.value)
-
-
-
     fetch("api.php", {
             method: "POST",
             body: formData,
         })
-        .then((res) => {
-            deb(res.json());
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 200) {
+                data = data.data;
+                deb(data);
+                Message.success('saved')
+            }
         });
+
+    // .then((res) => {
+    //     // res = res.json();
+    //     deb(res.json());
+    //     if (res.code === 200) {
+    //         deb('OK');
+    //     }
+    // });
 }
