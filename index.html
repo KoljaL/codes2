@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>codes2</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="header">header</div>
+    <div class="sidebar">sidebar</div>
+
+    <div class="form" id="newEntry">
+        <form>
+            <div class="input-wrapper">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" for="newEntry" />
+            </div>
+            <div class="input-wrapper">
+                <label for="tags">Tags</label>
+                <input type="text" name="tags" id="tags" for="newEntry" />
+            </div>
+            <div class="input-wrapper">
+                <label for="language">Language</label>
+                <input type="text" name="language" id="language" for="newEntry" />
+            </div>
+            <div class="input-wrapper">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" cols="30" rows="2" for="newEntry"></textarea>
+            </div>
+            <div class="input-wrapper">
+                <label for="content">Code</label>
+                <textarea name="content" id="content" cols="30" rows="10" for="newEntry"></textarea>
+            </div>
+            <div class="input-wrapper">
+                <input type="button" name="send" id="send" value="send" for="newEntry" />
+            </div>
+        </form>
+    </div>
+
+    <script src="./functions.js">
+    </script>
+</body>
+
+</html>
