@@ -19,7 +19,9 @@ if (!file_exists($db_path)) {
 } else {
     $db = new PDO('sqlite:' . $db_path);
 }
-$response = $_POST;
+// $response = $_POST;
+
+return_JSON($_POST);
 // $request = json_decode( file_get_contents( 'php://input' ), true );
 function return_JSON($response)
 {

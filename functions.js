@@ -2,18 +2,25 @@
 
 const deb = console.log.bind(window.console);
 
-document.addEventListener("DOMContentLoaded", () => {
-    deb(document.getElementById("send"))
-    document.getElementById("send").addEventListener('click', (el) => {
-            event.preventDefault;
-            console.log(el.target.form);
+let sendButton = document.getElementById("send");
+let content = document.getElementById("content");
+sendButton.addEventListener('click', newEntry);
 
-            const response = fetch("api.php", {
-                method: "POST",
-                body: JSON.stringify(el.target.form),
-            });
+
+
+function newEntry(el) {
+    event.preventDefault;
+    deb(el)
+    let formData = new FormData();
+    formData.append('content', content.value)
+
+
+
+    fetch("api.php", {
+            method: "POST",
+            body: formData,
         })
-        .then(() => {
-            console.log(response.json());
+        .then((res) => {
+            deb(res.json());
         });
-});
+}

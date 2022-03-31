@@ -63,15 +63,25 @@ textarea {
     background: var(--bg_3);
 }
 
+.content {
+    position: relative;
+    top: var(--header_full_height);
+    left: var(--sidebar_full_width);
+    padding: 1em;
+}
+
 @media (max-width:600px) {
     .sidebar {
         width: 0;
         overflow: hidden;
     }
+    .content {
+        left: 0;
+    }
 }
 
-.input-wrapper {
-    /* outline: black solid 1px; */
-    /* box-shadow: 4px 4px 0 black; */
-    margin: 1em;
-}
+
+/* outline: black solid 1px; */
+
+
+/* box-shadow: 4px 4px 0 black; */
