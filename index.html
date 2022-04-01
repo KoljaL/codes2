@@ -6,32 +6,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>codes2</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="apple-touch-icon" sizes="72x72" href="./images/icons/icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="./images/icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="./images/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="./images/icons/icon-152x152.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./images/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="./images/icons/icon-96x96.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" href="./favicon.ico">
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/33.0.0/inline/ckeditor.js"></script>
+
     <style>
 
     </style>
 </head>
 
 <body>
-    <div class="header">cotes</div>
+    <div class="header">
+        <img src="./images/umuk.svg">
+    </div>
     <div class="sidebar">sidebar</div>
     <div class="content">
-        <div class="body"></div>
         <div class="form" id="newEntry">
-            <form>
+            <div id="editor" setup="setupEditor" class="input-wrapper">
+                <p>This is some sample content.</p>
+            </div>
+            <!-- <form>
                 <div class="input-wrapper">
                     <textarea name="content" id="content" cols="30" rows="10" for="newEntry"></textarea>
                 </div>
                 <div class="input-wrapper">
                     <input type="button" name="send" id="send" value="send" for="newEntry" />
                 </div>
-            </form>
+            </form> -->
         </div>
+        <div id="notes"></div>
     </div>
     <!-- <div class="footer">footer</div> -->
 
+    <script>
+        InlineEditor.create(document.querySelector('#editor'))
+            .then(editor => {
+                window.editor = editor;
+                detectFocusOut(editor);
+            })
+
+        function detectFocusOut(editor) {
+            editor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
+                if (!isFocused) {
+                    console.log(editor.getData());
+                }
+            });
+        }
+    </script>
+
+
     <script src="./js/modal.js"></script>
-    <script src="./functions.js"></script>
+    <script src="./js/functions.js"></script>
 </body>
 
 </html>

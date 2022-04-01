@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="-.5 -.5 241.000 258.800" version="1.1">
+    <title>UMUK</title>
+    <desc>Live long and prosper</desc>
+    <style>
+        #inner{fill:#FFB200;}
+        #triangle{fill:#3A76AA;}
+        #outer{fill:#3A76AA;}
+    </style>
+    <path id="outer" d="M 139 161 A 70 70 0 1 0 79 138 L 21 187 A 120 120 1 1 1 148 237 L 139 161"  stroke="black" stroke-width="1.5"/>
+    <path id="inner" d="M 120 90.92 A 12.5 12.5 0 1 0 120 90.91"  stroke="black" stroke-width="1.5"/>
+    <path id="triangle" d="M 130 110.7 L 146 257 L 10 202 L 120.6 106.9 L 130 110.7" stroke="black" stroke-width="1.5"/>
+</svg>

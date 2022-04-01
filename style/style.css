@@ -54,6 +54,10 @@ textarea {
     background: var(--bg_3);
 }
 
+.header img {
+    height: var(--header_full_height);
+}
+
 .sidebar {
     position: absolute;
     top: var(--header_full_height);
