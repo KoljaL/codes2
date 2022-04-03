@@ -12,13 +12,19 @@
     --font_2: #696969;
     --border_0: black;
     --fontSalomon: #c19c90;
-    --fontBlue: #2798e4;
+    --fontBlue: #3A76AA;
     --fontViolet: #988cca;
     --fontYellow: #c9ac57;
     --fontOrange: #cb7832;
     --fontRed: #e9553b;
     --fontGreen: #6a8759;
     --text-shadow: 0.1em 0.1em black;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
 }
 
 body {
@@ -65,12 +71,31 @@ textarea {
     height: calc(100vh - var(--header_full_height));
     width: var(--sidebar_full_width);
     background: var(--bg_3);
+    padding-left: .5em;
+}
+
+.sidebar h2 span {
+    font-size: .7em;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--fontBlue);
+}
+
+.sidebar li {
+    list-style: none;
+    line-height: 1.5em;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    color: var(--fontBlue);
 }
 
 .content {
-    position: relative;
+    position: absolute;
     top: var(--header_full_height);
     left: var(--sidebar_full_width);
+    width: calc( 100% - var(--sidebar_full_width));
     padding: 1em;
 }
 

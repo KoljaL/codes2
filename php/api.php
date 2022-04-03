@@ -41,7 +41,7 @@ if (isset($_GET['save'])) {
     $count = strpos($_POST['content'], '><')+1;
     // no tag found, title and content are the same
     if ($count ===1) {
-        $title = substr(strip_tags($_POST['content']), 0, 20).'...';
+        $title = substr(strip_tags($_POST['content']), 0, 20);
         $content = $_POST['content'];
     }
     // prepare title and content
@@ -50,9 +50,8 @@ if (isset($_GET['save'])) {
         $content = substr($_POST['content'], $count);
     }
 
-
+    // decide to add new (0) or update note
     $id = $_POST['id'];
-
     if ("0" === $id) {
         $insert = $db->prepare("INSERT INTO notes (`content`, `title`, `date`) VALUES ( ?,?,?)") or sqlFehler($db->errorInfo()[2]);
         $saved = $insert->execute([$content, $title, date("Y-m-d H:i:s")]);
@@ -61,10 +60,6 @@ if (isset($_GET['save'])) {
         $sql = "UPDATE notes SET content=?, title=? WHERE id=?";
         $saved = $db->prepare($sql)->execute([$content, $title, $id]);
     }
-
-
-
-    
 
     $response = [];
     if ($saved) {
@@ -88,6 +83,16 @@ if (isset($_GET['id'])) {
     if ($note) {
         $response['code'] = 200;
         $response['data'] = $note;
+        return_JSON($response);
+    }
+}
+
+
+if (isset($_GET['remove'])) {
+    $select = $db->prepare("DELETE FROM notes WHERE id =?") or sqlFehler($db->errorInfo()[2]);
+    $del = $select->execute([$_POST['id']]);
+    if ($del) {
+        $response['code'] = 200;
         return_JSON($response);
     }
 }
