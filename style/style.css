@@ -114,3 +114,33 @@ textarea {
 
 
 /* box-shadow: 4px 4px 0 black; */
+
+
+/*
+//  
+//  ######## ########  #### ########  #######  ########
+//  ##       ##     ##  ##     ##    ##     ## ##     ##
+//  ##       ##     ##  ##     ##    ##     ## ##     ##
+//  ######   ##     ##  ##     ##    ##     ## ########
+//  ##       ##     ##  ##     ##    ##     ## ##   ##
+//  ##       ##     ##  ##     ##    ##     ## ##    ##
+//  ######## ########  ####    ##     #######  ##     ##
+//  
+*/
+
+.ck.ck-toolbar {
+    background: var(--bg_1)!important;
+    padding: 0 var(--ck-spacing-small);
+    border: 1px solid rgb(26, 26, 26)!important;
+}
+
+.ck.ck-reset_all,
+.ck.ck-reset_all * {
+    border-collapse: collapse;
+    font: normal normal normal var(--ck-font-size-base)/var(--ck-line-height-base) var(--ck-font-face);
+    color: var(--font_0)!important;
+    text-align: left;
+    white-space: nowrap;
+    cursor: auto;
+    float: none;
+}

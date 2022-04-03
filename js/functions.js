@@ -12,6 +12,36 @@ const editorDIV = document.querySelector("#editor");
 document.addEventListener('DOMContentLoaded', loadSidebar)
 deleteNote.addEventListener('click', removeNote)
 
+
+
+window.addEventListener('DOMContentLoaded', readURL);
+window.addEventListener('hashchange', readURL);
+
+
+/**
+ * 
+ * It reads the URL hash and it fetches the note from the database and sets the editor's content to the note's content
+ * 
+ */
+function readURL() {
+    let id = location.hash.slice(1).toLowerCase() || '';
+    id = id.split('-').at(-1);
+    if (id) {
+        let formData = new FormData();
+        formData.append('id', id)
+        fetch("./php/api.php?id", { method: "POST", body: formData, })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    data = data.data;
+                    lastNoteId = data.id;
+                    editor.setData('<h2>' + data.title + '</h2>' + data.content)
+                }
+            });
+    }
+}
+
+
 /**
  * 
  * Fetch the list of notes from the API and display them in the sidebar
@@ -52,15 +82,35 @@ function createSidebarList(data) {
  * It creates an instance of the InlineEditor class 
  * 
  * */
-InlineEditor.create(editorDIV)
+InlineEditor.create(editorDIV, {
+        toolbar: {
+            items: [
+                'heading', 'mode', 'document', 'doctools', '|',
+                'alignment', '|',
+                'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+                'link', '|',
+                'bulletedList', 'numberedList', 'todoList',
+                '-', // break point
+                'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor', '|',
+                'code', 'codeBlock', '|',
+                'insertTable', '|',
+                'outdent', 'indent', '|',
+                'uploadImage', 'blockQuote', '|',
+                'undo', 'redo'
+            ],
+            shouldNotGroupWhenFull: true
+        }
+    })
     .then(editor => {
-        // const toolbarContainer = document.querySelector('.header');
-        // toolbarContainer.innerHTML = editor.ui.view.toolbar.element.outerHTML;
-
         window.editor = editor;
-        detectFocusOut();
+        // document.querySelector('#toolbar').appendChild(editor.ui.view.toolbar.element);
+
+        // detectFocusOut();
         detectChangeContent();
     })
+
+
+
 
 
 InlineEditor.editorConfig = function(config) {
@@ -184,17 +234,10 @@ function sidebarHandler() {
     // links
     document.querySelectorAll('li').forEach(link => {
         link.addEventListener('click', (el) => {
-            let formData = new FormData();
-            formData.append('id', el.target.dataset.id)
-            fetch("./php/api.php?id", { method: "POST", body: formData, })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.code === 200) {
-                        data = data.data;
-                        lastNoteId = data.id;
-                        editor.setData('<h2>' + data.title + '</h2>' + data.content)
-                    }
-                });
+            deb(el.target)
+            let id = el.target.dataset.id;
+            let title = el.target.innerHTML.replaceAll(' ', '');
+            window.location.hash = title + '-' + id;
         })
     });
 }
