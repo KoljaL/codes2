@@ -54,11 +54,36 @@ function createSidebarList(data) {
  * */
 InlineEditor.create(editorDIV)
     .then(editor => {
+        // const toolbarContainer = document.querySelector('.header');
+        // toolbarContainer.innerHTML = editor.ui.view.toolbar.element.outerHTML;
+
         window.editor = editor;
         detectFocusOut();
         detectChangeContent();
     })
 
+
+InlineEditor.editorConfig = function(config) {
+    config.toolbarGroups = [
+        { name: 'document', groups: ['mode', 'document', 'doctools'] },
+        { name: 'clipboard', groups: ['clipboard', 'undo'] },
+        { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+        { name: 'forms', groups: ['forms'] },
+        '/',
+        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+        { name: 'links', groups: ['links'] },
+        { name: 'insert', groups: ['insert'] },
+        '/',
+        { name: 'styles', groups: ['styles'] },
+        { name: 'colors', groups: ['colors'] },
+        { name: 'tools', groups: ['tools'] },
+        { name: 'others', groups: ['others'] },
+        { name: 'about', groups: ['about'] }
+    ];
+
+    config.removeButtons = 'Save,NewPage,Preview,Print,PasteText,PasteFromWord,Copy,Cut,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,Outdent,Indent,JustifyCenter,JustifyRight,BidiLtr,BidiRtl,Language,Anchor,PageBreak,Iframe,Font,FontSize,Maximize,ShowBlocks,About';
+};
 
 
 /**
@@ -83,7 +108,11 @@ function detectFocusOut() {
  */
 function detectChangeContent() {
     editor.model.document.on('change:data', (evt, data) => {
-        autoSave();
+        // deb(evt)
+        if (data.isUndoable) {
+            autoSave();
+            // deb(data)
+        }
     });
 }
 
@@ -155,8 +184,6 @@ function sidebarHandler() {
     // links
     document.querySelectorAll('li').forEach(link => {
         link.addEventListener('click', (el) => {
-            // deb(el.target.dataset.id)
-
             let formData = new FormData();
             formData.append('id', el.target.dataset.id)
             fetch("./php/api.php?id", { method: "POST", body: formData, })
@@ -166,9 +193,6 @@ function sidebarHandler() {
                         data = data.data;
                         lastNoteId = data.id;
                         editor.setData('<h2>' + data.title + '</h2>' + data.content)
-                            // Message.success(data.title)
-                            // autoSave(false);
-
                     }
                 });
         })
