@@ -61,11 +61,17 @@ if (isset($_GET['save'])) {
         $saved = $db->prepare($sql)->execute([$content, $title, $id]);
     }
 
+    $select = $db->prepare("SELECT id, title FROM notes ") or sqlFehler($db->errorInfo()[2]);
+    $select->execute([]);
+    $notes_list = $select->fetchAll(PDO::FETCH_ASSOC);
+
+
     $response = [];
     if ($saved) {
         $response['code'] = 200;
         $response['data']['title'] = $title;
         $response['data']['id'] = $id;
+        $response['data']['list'] = $notes_list;
         return_JSON($response);
     }
 }
