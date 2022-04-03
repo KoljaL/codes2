@@ -6,14 +6,14 @@ var lastNoteId = 0;
 const content = document.getElementById("content");
 const sidebar = document.querySelector(".sidebar");
 const editorDIV = document.querySelector("#editor");
-// sendButton.addEventListener('click', newEntry);
-
-
-//
-// SIDEBAR
-//
 document.addEventListener('DOMContentLoaded', loadSidebar)
 
+
+/**
+ * 
+ * Fetch the list of notes from the API and display them in the sidebar
+ * 
+ */
 function loadSidebar() {
     fetch("./php/api.php?list", {
             method: "GET",
@@ -38,18 +38,24 @@ function loadSidebar() {
         })
 };
 
-//
-// init EDITOR
-//
+
+
+/**
+ * 
+ * It creates an instance of the InlineEditor class 
+ * 
+ * */
 InlineEditor.create(editorDIV)
     .then(editor => {
         window.editor = editor;
         detectFocusOut(editor);
     })
 
-//
-// save EDITOR CONTENT
-//
+/**
+ * 
+ * When the editor loses focus, save the note
+ * 
+ */
 function detectFocusOut(editor) {
     editor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
         if (!isFocused) {
@@ -64,37 +70,15 @@ function detectFocusOut(editor) {
                 .then(data => {
                     if (data.code === 200) {
                         loadSidebar();
-                        // data = data.data;
-                        deb(data);
-                        Message.success('saved')
+                        lastNoteId = data.data.id;
+                        Message.success(data.data.title + ' saved')
                     }
                 });
-            // console.log(editor.getData());
         }
     });
 }
 
 
-
-
-
-// function newEntry(el) {
-//     event.preventDefault;
-//     let formData = new FormData();
-//     formData.append('content', content.value)
-//     fetch("./php/api.php", {
-//             method: "POST",
-//             body: formData,
-//         })
-//         .then(response => response.json())
-//         .then(data => {
-//             if (data.code === 200) {
-//                 data = data.data;
-//                 deb(data);
-//                 Message.success('saved')
-//             }
-//         });
-// }
 
 
 

@@ -41,7 +41,7 @@ if (isset($_GET['save'])) {
     $count = strpos($_POST['content'], '><')+1;
     // no tag found, title and content are the same
     if ($count ===1) {
-        $title =strip_tags($_POST['content']);
+        $title = substr(strip_tags($_POST['content']), 0, 20).'...';
         $content = $_POST['content'];
     }
     // prepare title and content
@@ -51,27 +51,26 @@ if (isset($_GET['save'])) {
     }
 
 
-    // $insert = $db->prepare("INSERT INTO notes (`content`, `title`, `date`) VALUES ( :content, :title, :date)") or sqlFehler($db->errorInfo()[2]);
-    // $insert->bindValue(':content', $content);
-    // $insert->bindValue(':title', $title);
-    // $insert->bindValue(':date', date("Y-m-d H:i:s"));
+    $id = $_POST['id'];
+
+    if ("0" === $id) {
+        $insert = $db->prepare("INSERT INTO notes (`content`, `title`, `date`) VALUES ( ?,?,?)") or sqlFehler($db->errorInfo()[2]);
+        $saved = $insert->execute([$content, $title, date("Y-m-d H:i:s")]);
+        $id = $db->lastInsertId();
+    } else {
+        $sql = "UPDATE notes SET content=?, title=? WHERE id=?";
+        $saved = $db->prepare($sql)->execute([$content, $title, $id]);
+    }
 
 
-    $insert = $db->prepare("INSERT INTO notes (`content`, `title`, `date`) VALUES ( ?,?,?)") or sqlFehler($db->errorInfo()[2]);
-    // $insert->bindValue(':content', $content);
-    // $insert->bindValue(':title', $title);
-    // $insert->bindValue(':date', date("Y-m-d H:i:s"));
 
     
 
     $response = [];
-    if ($insert->execute([$content, $title, date("Y-m-d H:i:s")])) {
+    if ($saved) {
         $response['code'] = 200;
-        // $response['title'] = $title;
-        // $response['content'] = $content;
-        // $response['POST'] = $_POST['content'];
-        // $response['count'] = $count;
-        // $response['data']['id'] = 0;
+        $response['data']['title'] = $title;
+        $response['data']['id'] = $id;
         return_JSON($response);
     }
 }
