@@ -29,39 +29,16 @@
     <div class="header">
         <img src="./images/umuk.svg">
     </div>
-    <div class="sidebar">sidebar</div>
+    <div class="sidebar"></div>
     <div class="content">
-        <div class="form" id="newEntry">
-            <div id="editor" setup="setupEditor" class="input-wrapper">
-                <p>This is some sample content.</p>
-            </div>
-            <!-- <form>
-                <div class="input-wrapper">
-                    <textarea name="content" id="content" cols="30" rows="10" for="newEntry"></textarea>
-                </div>
-                <div class="input-wrapper">
-                    <input type="button" name="send" id="send" value="send" for="newEntry" />
-                </div>
-            </form> -->
+        <div id="editor" setup="setupEditor" class="input-wrapper">
+            <p>This is some sample content.</p>
         </div>
         <div id="notes"></div>
     </div>
     <!-- <div class="footer">footer</div> -->
 
     <script>
-        InlineEditor.create(document.querySelector('#editor'))
-            .then(editor => {
-                window.editor = editor;
-                detectFocusOut(editor);
-            })
-
-        function detectFocusOut(editor) {
-            editor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
-                if (!isFocused) {
-                    console.log(editor.getData());
-                }
-            });
-        }
     </script>
 
 
