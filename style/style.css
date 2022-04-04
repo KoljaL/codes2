@@ -1,5 +1,5 @@
 :root {
-    --header_full_height: 60px;
+    --header_full_height: 0px;
     --header_small_height: 50px;
     --footer_height: 20px;
     --sidebar_full_width: 220px;
@@ -81,20 +81,23 @@ a:hover {
     height: calc(100vh - var(--header_full_height));
     width: var(--sidebar_full_width);
     background: var(--bg_3);
-    padding-left: .5em;
 }
 
-.sidebar h2 span {
-    font-size: .7em;
-    font-weight: bold;
-    cursor: pointer;
-    color: var(--fontBlue);
+.sidebar h2 {
+    margin: .4em 0 .75em .25em;
+}
+
+.sidebar h2 img {
+    position: relative;
+    top: .15em;
+    margin-right: .5em;
 }
 
 .sidebar li {
     list-style: none;
     line-height: 1.5em;
     cursor: pointer;
+    padding-left: .5em;
 }
 
 .sidebar li:hover {
@@ -124,6 +127,30 @@ a:hover {
 
 
 /* box-shadow: 4px 4px 0 black; */
+
+.action {
+    display: flex;
+    justify-content: space-around;
+    margin-top: -.5em;
+    margin-bottom: .5em;
+    padding-top: .5em;
+    border-top: 1px solid black;
+    padding-bottom: .5em;
+    border-bottom: 1px solid black;
+}
+
+.action span {
+    padding: .4em;
+    margin-right: .9em;
+    font-size: .7em;
+    border: 1px solid var(--border_0);
+    cursor: pointer;
+    border-radius: .5em;
+}
+
+.action span:hover {
+    border: 1px solid var(--fontBlue);
+}
 
 
 /*

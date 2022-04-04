@@ -10,11 +10,11 @@ const URL = "http://localhost/codes2";
 // const URL = ''; //"http://localhost";
 const content = document.querySelector("#content");
 const sidebar = document.querySelector(".sidebar");
-const editNote = document.querySelector("#editNote");
+// const editNote = document.querySelector("#editNote");
 const deleteNote = document.querySelector("#deleteNote");
 const editorDIV = document.querySelector("#editor");
 document.addEventListener('DOMContentLoaded', loadSidebar)
-deleteNote.addEventListener('click', removeNote)
+    // deleteNote.addEventListener('click', removeNote)
 
 
 window.addEventListener('DOMContentLoaded', readURL);
@@ -71,7 +71,12 @@ function loadSidebar() {
  */
 function createSidebarList(data) {
     var innerHTML = /*HTML*/ `
-        <h2>Notes<span> +</span></h2>`;
+        <h2><img src="./images/umuk.svg" width="30px" height="30px">Notes</h2>
+        <div class=action>
+        <span id=editNote>edit</span>
+        <span id=newNote>new</span>
+        <span id=removeNote>remove</span>
+        </div>`;
     data.forEach(el => {
         // deb(el)
         innerHTML += /*HTML*/ `<li data-id="${el.id}">${el.title}</li>`;
@@ -80,17 +85,6 @@ function createSidebarList(data) {
 }
 
 
-
-/**
- * 
- * It creates an instance of the InlineEditor class 
- * 
- * */
-editNote.addEventListener('click', () => {
-
-    makeEditor();
-
-});
 
 
 function makeEditor() {
@@ -115,6 +109,7 @@ function makeEditor() {
         })
         .then(editor => {
             window.editor = editor;
+            deb(InlineEditor)
             detectFocusOut();
             // detectChangeContent();
         })
@@ -216,9 +211,15 @@ function createNote() {
 
 function sidebarHandler() {
     // new note
-    document.querySelector('h2 > span').addEventListener('click', (el) => {
-        // Message.success('Add new note')
+    document.querySelector('#newNote').addEventListener('click', (el) => {
         createNote();
+    })
+    document.querySelector('#editNote').addEventListener('click', (el) => {
+        deb('edit')
+        makeEditor();
+    })
+    document.querySelector('#removeNote').addEventListener('click', (el) => {
+        removeNote();
     })
 
     // links
