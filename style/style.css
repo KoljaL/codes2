@@ -51,6 +51,16 @@ textarea {
     font-size: 1em;
 }
 
+a,
+a:visited {
+    text-decoration: none;
+    color: var(--fontBlue);
+}
+
+a:hover {
+    text-decoration: dotted;
+}
+
 .header {
     position: absolute;
     top: 0;
@@ -127,6 +137,13 @@ textarea {
 //  ######## ########  ####    ##     #######  ##     ##
 //  
 */
+
+#editor {}
+
+.ck.ck-editor__editable {
+    border: none;
+    padding: 1px 0 0 0!important;
+}
 
 .ck.ck-toolbar {
     background: var(--bg_1)!important;

@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 //DB
-$db_path = '../data/db.sqlite';
+$db_path = '../data/dbe1w2.sqlite';
 
 if (!file_exists($db_path)) {
     $db = new PDO('sqlite:' . $db_path);
@@ -15,16 +15,7 @@ if (!file_exists($db_path)) {
     public TEXT NOT NULL DEFAULT "0",
     date TEXT NOT NULL DEFAULT "")');
     
-    $insert = $db->prepare("INSERT INTO 'notes' ('id','title','content','public','date') VALUES ('1','Maus','<p>Klein und grau.</p>','0','2022-04-02 22:01:34')");
-    $insert->execute();
-    $insert = $db->prepare("INSERT INTO 'notes' ('id','title','content','public','date') VALUES ('2','Hund','<p>Jagt die Katze.</p>','0','2022-04-02 22:01:34')");
-    $insert->execute();
-    $insert = $db->prepare("INSERT INTO 'notes' ('id','title','content','public','date') VALUES ('3','Katze','<p>Fängt die Maus.</p>','0','2022-04-02 22:01:34')");
-    $insert->execute();
-    $insert = $db->prepare("INSERT INTO 'notes' ('id','title','content','public','date') VALUES ('4','Vogel','<p>Kann fliegen.</p>','0','2022-04-02 22:01:34')");
-    $insert->execute();
-    $insert = $db->prepare("INSERT INTO 'notes' ('id','title','content','public','date') VALUES ('5','Elefant','<p>Groß und grau.</p>','0','2022-04-02 22:01:34')");
-    $insert->execute();
+    include_once 'dummy.php';
 } else {
     $db = new PDO('sqlite:' . $db_path);
 }
@@ -89,8 +80,12 @@ if (isset($_GET['id'])) {
     if ($note) {
         $response['code'] = 200;
         $response['data'] = $note;
-        return_JSON($response);
+    } else {
+        $response['code'] = 200;
+        $response['data']['title'] = '';
+        $response['data']['content'] = 'Note not found';
     }
+    return_JSON($response);
 }
 
 
@@ -126,7 +121,7 @@ if (isset($_GET['list'])) {
 
 
 
-
+ 
 
 
 //
@@ -135,9 +130,33 @@ if (isset($_GET['list'])) {
 function return_JSON($response)
 {
     header('Access-Control-Allow-Origin: *');
-    header('Content-Type: application/json; charset=UTF-8');
-    header('Access-Control-Allow-Methods: POST');
-    header('Access-Control-Max-Age: 3600');
-    header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+    header('Content-Type: application/json');
+
+    // header('Access-Control-Allow-Origin: http://127.0.0.1:5500', true);
+    // header('Access-Control-Allow-Origin: *');
+    // header('Content-Type: application/json; charset=UTF-8');
+    // header('Access-Control-Allow-Methods: POST,GET');
+    // header('Access-Control-Max-Age: 3600');
+    // header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+
+    // header('Access-Control-Allow-Origin: *');
+    // header('Access-Control-Allow-Methods: *');
+    // header('Access-Control-Allow-Headers: *');
+    // header('Access-Control-Max-Age: 86400');
+    // header("X-Frame-Options: *");
+
+    // header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, X-Token-Auth, Authorization');
+    // header('Access-Control-Allow-Origin: *');
+    // hesder('Access-Control-Allow-Headers: *');
+
     echo json_encode($response);
+}
+
+// preflight ?? handshake?? maybe not neccessary...
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: *');
+    header('Access-Control-Allow-Headers: *');
+    header('Access-Control-Max-Age: 1728000');
+    die();
 }

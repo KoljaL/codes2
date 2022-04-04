@@ -1,17 +1,20 @@
 "use strict";
-
+const pageTitle = 'Cotes';
+document.title = pageTitle;
 const deb = console.log.bind(window.console);
 
 var lastNoteId = 0;
 var saved = 0;
 
+const URL = "http://localhost/codes2";
+// const URL = ''; //"http://localhost";
 const content = document.querySelector("#content");
 const sidebar = document.querySelector(".sidebar");
+const editNote = document.querySelector("#editNote");
 const deleteNote = document.querySelector("#deleteNote");
 const editorDIV = document.querySelector("#editor");
 document.addEventListener('DOMContentLoaded', loadSidebar)
 deleteNote.addEventListener('click', removeNote)
-
 
 
 window.addEventListener('DOMContentLoaded', readURL);
@@ -29,13 +32,14 @@ function readURL() {
     if (id) {
         let formData = new FormData();
         formData.append('id', id)
-        fetch("./php/api.php?id", { method: "POST", body: formData, })
+        fetch(URL + "/php/api.php?id", { method: "POST", body: formData, })
             .then(response => response.json())
             .then(data => {
                 if (data.code === 200) {
                     data = data.data;
                     lastNoteId = data.id;
-                    editor.setData('<h2>' + data.title + '</h2>' + data.content)
+                    document.title = pageTitle + ' - ' + data.title;
+                    editorDIV.innerHTML = '<h2>' + data.title + '</h2>' + data.content;
                 }
             });
     }
@@ -48,7 +52,7 @@ function readURL() {
  * 
  */
 function loadSidebar() {
-    fetch("./php/api.php?list", { method: "GET", })
+    fetch(URL + "/php/api.php?list", { method: "GET", mode: 'cors' })
         .then(response => response.json())
         .then(data => {
             if (data.code === 200) {
@@ -82,58 +86,41 @@ function createSidebarList(data) {
  * It creates an instance of the InlineEditor class 
  * 
  * */
-InlineEditor.create(editorDIV, {
-        toolbar: {
-            items: [
-                'heading', 'mode', 'document', 'doctools', '|',
-                'alignment', '|',
-                'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
-                'link', '|',
-                'bulletedList', 'numberedList', 'todoList',
-                '-', // break point
-                'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor', '|',
-                'code', 'codeBlock', '|',
-                'insertTable', '|',
-                'outdent', 'indent', '|',
-                'uploadImage', 'blockQuote', '|',
-                'undo', 'redo'
-            ],
-            shouldNotGroupWhenFull: true
-        }
-    })
-    .then(editor => {
-        window.editor = editor;
-        // document.querySelector('#toolbar').appendChild(editor.ui.view.toolbar.element);
+editNote.addEventListener('click', () => {
 
-        // detectFocusOut();
-        detectChangeContent();
-    })
+    makeEditor();
+
+});
 
 
+function makeEditor() {
+    InlineEditor.create(editorDIV, {
+            toolbar: {
+                items: [
+                    'heading', 'mode', 'document', 'doctools', '|',
+                    'alignment', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+                    'link', '|',
+                    'bulletedList', 'numberedList', 'todoList',
+                    '-', // break point
+                    'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor', '|',
+                    'code', 'codeBlock', '|',
+                    'insertTable', '|',
+                    'outdent', 'indent', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo'
+                ],
+                shouldNotGroupWhenFull: true
+            }
+        })
+        .then(editor => {
+            window.editor = editor;
+            detectFocusOut();
+            // detectChangeContent();
+        })
+}
 
 
-
-InlineEditor.editorConfig = function(config) {
-    config.toolbarGroups = [
-        { name: 'document', groups: ['mode', 'document', 'doctools'] },
-        { name: 'clipboard', groups: ['clipboard', 'undo'] },
-        { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
-        { name: 'forms', groups: ['forms'] },
-        '/',
-        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
-        { name: 'links', groups: ['links'] },
-        { name: 'insert', groups: ['insert'] },
-        '/',
-        { name: 'styles', groups: ['styles'] },
-        { name: 'colors', groups: ['colors'] },
-        { name: 'tools', groups: ['tools'] },
-        { name: 'others', groups: ['others'] },
-        { name: 'about', groups: ['about'] }
-    ];
-
-    config.removeButtons = 'Save,NewPage,Preview,Print,PasteText,PasteFromWord,Copy,Cut,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,Outdent,Indent,JustifyCenter,JustifyRight,BidiLtr,BidiRtl,Language,Anchor,PageBreak,Iframe,Font,FontSize,Maximize,ShowBlocks,About';
-};
 
 
 /**
@@ -145,6 +132,7 @@ function detectFocusOut() {
     editor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
         if (!isFocused) {
             saveNote();
+            editor.destroy();
         }
     });
 }
@@ -194,7 +182,7 @@ function saveNote() {
     let formData = new FormData();
     formData.append('id', lastNoteId)
     formData.append('content', editor.getData())
-    fetch("./php/api.php?save", { method: "POST", body: formData, })
+    fetch(URL + "/php/api.php?save", { method: "POST", body: formData, })
         .then(response => response.json())
         .then(data => {
             if (data.code === 200) {
@@ -214,8 +202,10 @@ function saveNote() {
  * 
  */
 function createNote() {
+    editorDIV.innerHTML = '<h2>New Note</h2>';
     lastNoteId = 0;
-    editor.setData('add new note');
+    makeEditor();
+    // editor.setData('add new note');
 }
 
 /**
@@ -252,11 +242,38 @@ function sidebarHandler() {
 function removeNote() {
     let formData = new FormData();
     formData.append('id', lastNoteId)
-    fetch("./php/api.php?remove", { method: "POST", body: formData })
+    fetch(URL + "/php/api.php?remove", { method: "POST", body: formData })
         .then(response => response.json())
         .then(data => {
+            window.location.hash = '';
             Message.success('Note deleted')
             loadSidebar();
             createNote();
         })
 }
+
+
+
+
+
+// InlineEditor.editorConfig = function(config) {
+//     config.toolbarGroups = [
+//         { name: 'document', groups: ['mode', 'document', 'doctools'] },
+//         { name: 'clipboard', groups: ['clipboard', 'undo'] },
+//         { name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing'] },
+//         { name: 'forms', groups: ['forms'] },
+//         '/',
+//         { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+//         { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph'] },
+//         { name: 'links', groups: ['links'] },
+//         { name: 'insert', groups: ['insert'] },
+//         '/',
+//         { name: 'styles', groups: ['styles'] },
+//         { name: 'colors', groups: ['colors'] },
+//         { name: 'tools', groups: ['tools'] },
+//         { name: 'others', groups: ['others'] },
+//         { name: 'about', groups: ['about'] }
+//     ];
+
+//     config.removeButtons = 'Save,NewPage,Preview,Print,PasteText,PasteFromWord,Copy,Cut,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,Outdent,Indent,JustifyCenter,JustifyRight,BidiLtr,BidiRtl,Language,Anchor,PageBreak,Iframe,Font,FontSize,Maximize,ShowBlocks,About';
+// };
