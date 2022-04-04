@@ -9,7 +9,7 @@ var saved = 0;
 const URL = "http://localhost/codes2";
 // const URL = ''; //"http://localhost";
 const content = document.querySelector("#content");
-const sidebar = document.querySelector(".sidebar");
+const notesList = document.querySelector("#notesList");
 // const editNote = document.querySelector("#editNote");
 const deleteNote = document.querySelector("#deleteNote");
 const editorDIV = document.querySelector("#editor");
@@ -70,18 +70,12 @@ function loadSidebar() {
  * 
  */
 function createSidebarList(data) {
-    var innerHTML = /*HTML*/ `
-        <h2><img src="./images/umuk.svg" width="30px" height="30px">Notes</h2>
-        <div class=action>
-        <span id=editNote>edit</span>
-        <span id=newNote>new</span>
-        <span id=removeNote>remove</span>
-        </div>`;
+    var innerHTML = '';
     data.forEach(el => {
         // deb(el)
         innerHTML += /*HTML*/ `<li data-id="${el.id}">${el.title}</li>`;
     });
-    sidebar.innerHTML = innerHTML;
+    notesList.innerHTML = innerHTML;
 }
 
 
@@ -96,7 +90,6 @@ function makeEditor() {
                     'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
                     'link', '|',
                     'bulletedList', 'numberedList', 'todoList',
-                    '-', // break point
                     'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor', '|',
                     'code', 'codeBlock', '|',
                     'insertTable', '|',

@@ -26,13 +26,23 @@
 </head>
 
 <body>
-    <div class="sidebar"></div>
+    <div class="sidebar">
+        <h2><img src="./images/umuk.svg" width="40px" height="40px">Cotes</h2>
+        <div class=action>
+            <span id=editNote>edit</span>
+            <span id=newNote>new</span>
+            <span id=removeNote>remove</span>
+        </div>
+        <div id="notesList"></div>
+    </div>
     <div class="content">
         <div id="toolbar"></div>
         <div id="editor" setup="setupEditor" class="input-wrapper">
             <p>This is some sample content.</p>
         </div>
-        <div id="notes"></div>
+        <div id="notes">
+
+        </div>
     </div>
     <!-- <div class="footer">footer</div> -->
 

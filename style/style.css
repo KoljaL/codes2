@@ -21,10 +21,29 @@
     --text-shadow: 0.1em 0.1em black;
 }
 
+@font-face {
+    font-family: 'ZillaSlabRegular';
+    src: url(./fonts/ZillaSlab-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'ZillaSlabMedium';
+    src: url(./fonts/ZillaSlab-Medium.ttf);
+}
+
 *,
 *:before,
 *:after {
     box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'ZillaSlabRegular';
 }
 
 body {
@@ -84,12 +103,12 @@ a:hover {
 }
 
 .sidebar h2 {
-    margin: .4em 0 .75em .25em;
+    margin: -.2em 0 .6em .25em;
 }
 
 .sidebar h2 img {
     position: relative;
-    top: .15em;
+    top: .35em;
     margin-right: .5em;
 }
 
@@ -145,11 +164,15 @@ a:hover {
     font-size: .7em;
     border: 1px solid var(--border_0);
     cursor: pointer;
+    background: var(--bg_3);
     border-radius: .5em;
+    font-family: 'ZillaSlabRegular';
 }
 
 .action span:hover {
-    border: 1px solid var(--fontBlue);
+    background: var(--bg_2);
+    /* border: 1px solid var(--fontBlue); */
+    font-family: 'ZillaSlabMedium';
 }
 
 
@@ -187,4 +210,8 @@ a:hover {
     white-space: nowrap;
     cursor: auto;
     float: none;
+}
+
+#editor h2 {
+    margin-top: -.4em;
 }
