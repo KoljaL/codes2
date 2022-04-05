@@ -151,6 +151,7 @@ function createSidebarList(data) {
 /**
  * 
  * Create an CKEditor instance and return it
+ * https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html
  * 
  */
 function makeEditor() {
