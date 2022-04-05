@@ -1,29 +1,61 @@
 "use strict";
-const pageTitle = 'Cotes';
-document.title = pageTitle;
-const deb = console.log.bind(window.console);
-
-var lastNoteId = 0;
-var saved = 0;
-
-const URL = "http://localhost/codes2";
-// const URL = ''; //"http://localhost";
-const content = document.querySelector("#content");
-const notesList = document.querySelector("#notesList");
-// const editNote = document.querySelector("#editNote");
-const deleteNote = document.querySelector("#deleteNote");
-const editorDIV = document.querySelector("#editor");
-document.addEventListener('DOMContentLoaded', loadSidebar)
-    // deleteNote.addEventListener('click', removeNote)
-
-
-window.addEventListener('DOMContentLoaded', readURL);
-window.addEventListener('hashchange', readURL);
 
 
 /**
  * 
- * It reads the URL hash and it fetches the note from the database and sets the editor's content to the note's content
+ * const & vars
+ * 
+ */
+const deb = console.log.bind(window.console);
+const pageTitle = 'Cotes';
+const URL = "http://localhost/codes2";
+// const URL = '';  
+const content = document.querySelector("#content");
+const cotesList = document.querySelector("#cotesList");
+const editCote = document.querySelector("#editCote");
+const newCote = document.querySelector("#newCote");
+const deleteCote = document.querySelector("#deleteCote");
+const editorDIV = document.querySelector("#editor");
+const hamburger = document.querySelector(".hamburger");
+const sidebar = document.querySelector(".sidebar");
+
+var lastCoteId, saved = 0;
+document.title = pageTitle;
+
+
+
+
+
+/**
+ * 
+ * eventListener
+ * 
+ */
+newCote.addEventListener('click', createCote)
+editCote.addEventListener('click', makeEditor)
+deleteCote.addEventListener('click', removeCote)
+hamburger.addEventListener('click', toggleSidebar)
+document.addEventListener('DOMContentLoaded', loadSidebar)
+window.addEventListener('DOMContentLoaded', readURL);
+window.addEventListener('hashchange', readURL);
+
+
+
+/**
+ * 
+ * Toggle the sidebar's class attribute to add or remove the "overlay" class
+ * 
+ */
+function toggleSidebar() {
+    hamburger.classList.toggle("checked");
+    sidebar.classList.toggle("overlay");
+}
+
+
+
+/**
+ * 
+ * It reads the URL hash and it fetches the cote from the database and sets the editor's content to the cote's content
  * 
  */
 function readURL() {
@@ -37,7 +69,7 @@ function readURL() {
             .then(data => {
                 if (data.code === 200) {
                     data = data.data;
-                    lastNoteId = data.id;
+                    lastCoteId = data.id;
                     document.title = pageTitle + ' - ' + data.title;
                     editorDIV.innerHTML = '<h2>' + data.title + '</h2>' + data.content;
                 }
@@ -46,9 +78,10 @@ function readURL() {
 }
 
 
+
 /**
  * 
- * Fetch the list of notes from the API and display them in the sidebar
+ * Fetch the list of cotes from the API and display them in the sidebar
  * 
  */
 function loadSidebar() {
@@ -64,9 +97,11 @@ function loadSidebar() {
         })
 };
 
+
+
 /**
  * 
- * Create a list of notes from the data array
+ * Create a list of cotes from the data array
  * 
  */
 function createSidebarList(data) {
@@ -75,13 +110,19 @@ function createSidebarList(data) {
         // deb(el)
         innerHTML += /*HTML*/ `<li data-id="${el.id}">${el.title}</li>`;
     });
-    notesList.innerHTML = innerHTML;
+    cotesList.innerHTML = innerHTML;
 }
 
 
 
-
+/**
+ * 
+ * Create an CKEditor instance and return it
+ * 
+ */
 function makeEditor() {
+    hamburger.classList.remove("checked");
+    sidebar.classList.remove("overlay");
     InlineEditor.create(editorDIV, {
             toolbar: {
                 items: [
@@ -110,16 +151,15 @@ function makeEditor() {
 
 
 
-
 /**
  * 
- * When the editor loses focus, save the note
+ * When the editor loses focus, save the cote
  * 
  */
 function detectFocusOut() {
     editor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
         if (!isFocused) {
-            saveNote();
+            saveCote();
             editor.destroy();
         }
     });
@@ -143,32 +183,31 @@ function detectChangeContent() {
 }
 
 
+
 /**
  * 
- * This function will save the note every second if the saved variable is set to 1
+ * This function will save the cote every second if the saved variable is set to 1
  * 
  */
 function autoSave() {
     if (!saved) {
         saved = 1;
         setTimeout(() => {
-            saveNote();
+            saveCote();
         }, 1000);
     }
 }
 
 
 
-
-
 /**
  * 
- * It saves the note to the database.
+ * It saves the cote to the database.
  * 
  */
-function saveNote() {
+function saveCote() {
     let formData = new FormData();
-    formData.append('id', lastNoteId)
+    formData.append('id', lastCoteId)
     formData.append('content', editor.getData())
     fetch(URL + "/php/api.php?save", { method: "POST", body: formData, })
         .then(response => response.json())
@@ -178,23 +217,29 @@ function saveNote() {
                 sidebarHandler();
                 saved = 0;
 
-                lastNoteId = data.data.id;
+                lastCoteId = data.data.id;
                 Message.success(data.data.title + ' saved')
             }
         });
 }
 
+
+
 /**
  * 
- * Create the note in the editor
+ * Create the cote in the editor
  * 
  */
-function createNote() {
-    editorDIV.innerHTML = '<h2>New Note</h2>';
-    lastNoteId = 0;
+function createCote() {
+    hamburger.classList.remove("checked");
+    sidebar.classList.remove("overlay");
+    editorDIV.innerHTML = '<h2>New Cote</h2>';
+    lastCoteId = 0;
     makeEditor();
-    // editor.setData('add new note');
+    // editor.setData('add new cote');
 }
+
+
 
 /**
  * 
@@ -203,25 +248,13 @@ function createNote() {
  */
 
 function sidebarHandler() {
-    // new note
-    document.querySelector('#newNote').addEventListener('click', (el) => {
-        createNote();
-    })
-    document.querySelector('#editNote').addEventListener('click', (el) => {
-        deb('edit')
-        makeEditor();
-    })
-    document.querySelector('#removeNote').addEventListener('click', (el) => {
-        removeNote();
-    })
-
-    // links
     document.querySelectorAll('li').forEach(link => {
         link.addEventListener('click', (el) => {
             deb(el.target)
             let id = el.target.dataset.id;
             let title = el.target.innerHTML.replaceAll(' ', '');
             window.location.hash = title + '-' + id;
+            toggleSidebar()
         })
     });
 }
@@ -230,19 +263,21 @@ function sidebarHandler() {
 
 /**
  * 
- * This function removes a note from the database
+ * This function removes a cote from the database
  * 
  */
-function removeNote() {
+function removeCote() {
+    hamburger.classList.remove("checked");
+    sidebar.classList.remove("overlay");
     let formData = new FormData();
-    formData.append('id', lastNoteId)
+    formData.append('id', lastCoteId)
     fetch(URL + "/php/api.php?remove", { method: "POST", body: formData })
         .then(response => response.json())
         .then(data => {
             window.location.hash = '';
-            Message.success('Note deleted')
+            Message.success('Cote deleted')
             loadSidebar();
-            createNote();
+            createCote();
         })
 }
 

@@ -17,8 +17,8 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/png" href="./favicon.ico">
-    <link rel="stylesheet" href="./style/style.css">
     <script src="https://cdn.ckeditor.com/ckeditor5/33.0.0/inline/ckeditor.js"></script>
+    <link rel="stylesheet" href="./style/style.css">
 
     <style>
 
@@ -26,30 +26,30 @@
 </head>
 
 <body>
+    <div class="header">
+        <h2><img src="./images/umuk.svg" width="40px" height="40px">Cotes</h2>
+        <div class=hamburger>
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+        </div>
+    </div>
     <div class="sidebar">
         <h2><img src="./images/umuk.svg" width="40px" height="40px">Cotes</h2>
         <div class=action>
-            <span id=editNote>edit</span>
-            <span id=newNote>new</span>
-            <span id=removeNote>remove</span>
+            <span id=editCote>edit</span>
+            <span id=newCote>new</span>
+            <span id=deleteCote>remove</span>
         </div>
-        <div id="notesList"></div>
+        <div id="cotesList"></div>
     </div>
     <div class="content">
         <div id="toolbar"></div>
         <div id="editor" setup="setupEditor" class="input-wrapper">
-            <p>This is some sample content.</p>
+            <p>Code Notes</p>
         </div>
-        <div id="notes">
-
-        </div>
+        <div id="Cotes"></div>
     </div>
-    <!-- <div class="footer">footer</div> -->
-
-    <script>
-    </script>
-
-
     <script src="./js/modal.js"></script>
     <script src="./js/functions.js"></script>
 </body>
