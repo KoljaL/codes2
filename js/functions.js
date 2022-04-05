@@ -8,7 +8,8 @@
  */
 const deb = console.log.bind(window.console);
 const pageTitle = 'Cotes';
-const URL = "http://localhost/codes2";
+// const URL = "http://localhost/codes2";
+const URL = "https://dev.rasal.de/cotes";
 // const URL = '';  
 const content = document.querySelector("#content");
 const cotesList = document.querySelector("#cotesList");
@@ -20,6 +21,7 @@ const hamburger = document.querySelector(".hamburger");
 const sidebar = document.querySelector(".sidebar");
 
 var lastCoteId, saved = 0;
+var tapedTwice = false;
 document.title = pageTitle;
 
 
@@ -31,13 +33,44 @@ document.title = pageTitle;
  * eventListener
  * 
  */
+document.addEventListener('DOMContentLoaded', loadSidebar)
+document.addEventListener('DOMContentLoaded', readURL);
+document.addEventListener('DOMContentLoaded', detectMobile);
+window.addEventListener('hashchange', readURL);
 newCote.addEventListener('click', createCote)
 editCote.addEventListener('click', makeEditor)
 deleteCote.addEventListener('click', removeCote)
 hamburger.addEventListener('click', toggleSidebar)
-document.addEventListener('DOMContentLoaded', loadSidebar)
-window.addEventListener('DOMContentLoaded', readURL);
-window.addEventListener('hashchange', readURL);
+editorDIV.addEventListener("touchstart", doubleTabToEdit);
+
+
+/**
+ * If the window width is less than 600px && no hash in URL, then toggle the sidebar
+ */
+function detectMobile() {
+    const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (width < 600 && !location.hash) {
+        toggleSidebar()
+    }
+}
+
+
+
+
+/**
+ * 
+ * If the user double tabs, then make the editor
+ * 
+ */
+function doubleTabToEdit() {
+    if (!tapedTwice) {
+        tapedTwice = true;
+        setTimeout(function() { tapedTwice = false; }, 300);
+        return false;
+    }
+    event.preventDefault();
+    makeEditor()
+}
 
 
 
@@ -144,8 +177,8 @@ function makeEditor() {
         .then(editor => {
             window.editor = editor;
             deb(InlineEditor)
-            detectFocusOut();
-            // detectChangeContent();
+                // detectFocusOut();
+                // detectChangeContent();
         })
 }
 
@@ -216,8 +249,9 @@ function saveCote() {
                 createSidebarList(data.data.list);
                 sidebarHandler();
                 saved = 0;
-
                 lastCoteId = data.data.id;
+                window.location.hash = data.data.title + '-' + data.data.id;
+
                 Message.success(data.data.title + ' saved')
             }
         });

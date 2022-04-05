@@ -142,55 +142,6 @@ a:hover {
     height: var(--header_height);
 }
 
-.hamburger {
-    display: block;
-    width: 50px;
-    height: 50px;
-    position: relative;
-    border-radius: 4px;
-    transition: border-radius .5s;
-    margin-right: 1em;
-}
-
-.line {
-    padding: .1em;
-    border: 1px solid var(--font_2);
-    cursor: pointer;
-    background: var(--bg_1);
-    border-radius: .5em;
-    position: absolute;
-    left: 10px;
-    height: 4px;
-    width: 45px;
-    display: block;
-    transition: 0.5s;
-    transform-origin: center;
-}
-
-.line:nth-child(1) {
-    top: 12px;
-}
-
-.line:nth-child(2) {
-    top: 24px;
-}
-
-.line:nth-child(3) {
-    top: 36px;
-}
-
-.hamburger.checked .line:nth-child(1) {
-    transform: translateY(12px) rotate(-45deg);
-}
-
-.hamburger.checked .line:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger.checked .line:nth-child(3) {
-    transform: translateY(-12px) rotate(45deg);
-}
-
 @media (max-width:600px) {
     .header {
         display: flex;
@@ -251,6 +202,68 @@ a:hover {
 
 /*
 //  
+//  ##     ##    ###    ##     ## ########  ##     ## ########   ######   ######## ########
+//  ##     ##   ## ##   ###   ### ##     ## ##     ## ##     ## ##    ##  ##       ##     ##
+//  ##     ##  ##   ##  #### #### ##     ## ##     ## ##     ## ##        ##       ##     ##
+//  ######### ##     ## ## ### ## ########  ##     ## ########  ##   #### ######   ########
+//  ##     ## ######### ##     ## ##     ## ##     ## ##   ##   ##    ##  ##       ##   ##
+//  ##     ## ##     ## ##     ## ##     ## ##     ## ##    ##  ##    ##  ##       ##    ##
+//  ##     ## ##     ## ##     ## ########   #######  ##     ##  ######   ######## ##     ##
+//  
+*/
+
+.hamburger {
+    display: block;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    border-radius: 4px;
+    transition: border-radius .5s;
+    margin-right: 1em;
+}
+
+.line {
+    padding: .1em;
+    border: 1px solid var(--font_2);
+    cursor: pointer;
+    background: var(--bg_1);
+    border-radius: .5em;
+    position: absolute;
+    left: 10px;
+    height: 4px;
+    width: 45px;
+    display: block;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.line:nth-child(1) {
+    top: 12px;
+}
+
+.line:nth-child(2) {
+    top: 24px;
+}
+
+.line:nth-child(3) {
+    top: 36px;
+}
+
+.hamburger.checked .line:nth-child(1) {
+    transform: translateY(12px) rotate(-45deg);
+}
+
+.hamburger.checked .line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.checked .line:nth-child(3) {
+    transform: translateY(-12px) rotate(45deg);
+}
+
+
+/*
+//  
 //  ######## ########  #### ########  #######  ########
 //  ##       ##     ##  ##     ##    ##     ## ##     ##
 //  ##       ##     ##  ##     ##    ##     ## ##     ##
@@ -260,8 +273,6 @@ a:hover {
 //  ######## ########  ####    ##     #######  ##     ##
 //  
 */
-
-#editor {}
 
 .ck.ck-editor__editable {
     border: none;
@@ -284,6 +295,36 @@ a:hover {
     cursor: auto;
     float: none;
 }
+
+.ck.ck-list {
+    list-style-type: none;
+    background: var(--bg_1)!important;
+}
+
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover,
+.ck.ck-list__item .ck-button:hover:not(.ck-disabled) {
+    background: var(--bg_2);
+}
+
+.ck.ck-button.ck-on,
+a.ck.ck-button.ck-on {
+    background: var(--bg_1);
+    color: var(--fontBlue);
+}
+
+
+/*
+//  
+//   ######   #######  ######## ########  ######
+//  ##    ## ##     ##    ##    ##       ##    ##
+//  ##       ##     ##    ##    ##       ##
+//  ##       ##     ##    ##    ######    ######
+//  ##       ##     ##    ##    ##             ##
+//  ##    ## ##     ##    ##    ##       ##    ##
+//   ######   #######     ##    ########  ######
+//  
+*/
 
 #editor h2 {
     margin-top: -.4em;
